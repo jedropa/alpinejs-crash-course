@@ -1,0 +1,128 @@
+<html>
+<head>
+    <title>Alpine Js Crash Course</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="flex justify-center">
+
+    <section class="container mx-auto mt-6 max-w-lg">
+        <h1 class="text-5xl mb-4">Alpine Js Crash Course</h1>
+        <h2 class="text-xl mb-4" x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h2>
+        <!-- x-data = Declare a NEW Alpine component and its data for a block of HTML -->
+
+        <!-- Increment Counter -->
+        <div class="my-4 p-4 border rounded-md">
+            <p>Increment a value with a button click</p>
+            <div x-data="{ count: 0 }" class="my-4 p-6">
+                <button class="bg-blue-700 text-white px-4 py-2 rounded-md" x-on:click="count++">Increment</button>
+                <span x-text="count" class="px-4 py-2 text-xl"></span>
+            </div>
+        </div>
+        <!-- Toggle Content (Show Hide Content) -->
+        <!-- x-show -->
+        <!-- <div x-data="{ open: false, toggle() { this.open = ! this.open } }" class="my-4 p-6">
+            <button class="bg-slate-700 text-white px-4 py-2 rounded-xl" @click="toggle()">Toggle Content</button>
+        
+            <div x-show="open" x-transition x-cloak class="bg-gray-200 p-6 my-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div> -->
+
+        <!-- Toggle Content (Show Hide Content) -->
+        <!-- x-show -->
+        <div x-data="{
+            open: false, 
+            name: 'Charlie',
+            search: '',
+            posts: [
+            { id: 1, title: 'Post One', author: 'John Doe', body: 'This is post one' },
+            { id: 2, title: 'Post Two' },
+            { id: 3, title: 'Post Three' },
+            { id: 4, title: 'Post Four' }
+            ],
+            toggle() { this.open =! this.open },
+            }" class="my-4 p-6 border rounded-md">
+
+            <!-- Toggle Content (Show Hide Content) -->
+            <div class="my-4 p-4 border rounded-md">
+                <p class="mb-4 text-sm">Use toggle() to show/hide content.</p>
+                <button class="bg-red-700 text-white px-4 py-2 rounded-xl mb-4" @click="toggle()"
+                    x-bind:class="open ? 'bg-blue-800' : 'bg-slate-700' ">
+                    Toggle Content
+                </button>
+
+                <div x-show="open" x-transition x-cloak class="bg-gray-500 text-white p-6 my-4">
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.s
+                </div>
+            </div>
+    
+            <!-- x-if -->
+            <div class="my-4 p-4 border rounded-md">
+                <p class="my-5">x-if: opens / closes based on current condition of open for parent element</p>
+                <template x-if="open">
+                    <div x-cloak class="my-4 p-6 border rounded-md">
+                        <p>This is displayed if x-if="open".</p>
+
+                    </div>
+                </template>
+            </div>
+
+            <!-- Use x-text to bind a value to an element’s text content. -->
+            <!-- x-text -->
+            <div class="my-4 p-6 border rounded-md" x-data="">
+                <p class="mb-4 text-sm">Use x-text to bind a value from x-data to an element’s text content.</p>
+                <p>The value of name is: <span x-text="name" class="font-bold"></span></p>
+            </div>
+
+            <!-- x-model -->
+            <div class="my-4 border rounded-md p-4">
+                <p class="mt-4 text-sm">Display the value being entered in the input</p>
+                <input 
+                    type="text" 
+                    x-model="search" 
+                    class="border rounded-md p-2 my-4"
+                    placeholder="Search...">
+                </input>
+
+                <p class="mb-4">
+                    <span class="font-bold">Searching For:</span>
+                    <span x-show="search" x-text="search"></span>
+                    <span x-show="!search" class="text-sm"> no search term entered</span>
+                </p>
+            </div>
+
+            <!-- x-for -->
+            <div class="my-4 p-6 border rounded-md">
+                <p class="text-sm" >Loop through an array of posts contained in x-data</p>
+                <!-- Looping through a posts array -->
+                <h3 class="mt-4">Array of Posts: </h3>               
+                <template x-for="post in posts" :key="post.id">
+                    <div class="mt-4 p-4 border rounded-md">
+                        <h4 x-text="post.title"></h4>
+                        <p class="text-sm" x-text="post.body"></p>
+                        <p class="text-xs" x-text="post.author"></p>
+                    </div>
+                </template>
+
+                <button @click="posts.push({title: 'New Post'})" class="bg-blue-800 text-white px-4 py-2 my-4 rounded-md">
+                    Add Post
+                </button>
+            </div>
+
+            <!-- x-effect -->
+            <div class="my-4 p-4 border rounded-md">
+                <p class="my-4">Use x-effect to console log the state of open</p>
+                <div x-effect="console.log(open)" class="my-4">
+                    <p>open the console to view the results</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+</body>
+</html>
