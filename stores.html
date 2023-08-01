@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlpineJS Stores</title>
+    <!-- Alpine Plugins -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Alpine Core -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div x-data 
+    :class="$store.darkMode.on && 'bg-gray-800 text-white'" 
+    class="container mx-auto max-w-lg mt-6 bg-gray-200 p-4">
+    <p class="mb-4">THIS IS THE DARK MODE DIV</p>   
+
+
+    <button @click="$store.darkMode.toggle()" class="bg-blue-700 text-white px-4 py-2 rounded-md">Toggle Dark Mode</button>
+    </div>
+
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('darkMode', {
+                on: true,
+                toggle() {
+                    this.on = !this.on
+                } 
+
+            })
+        })
+    </script>
+</body>
+</html>
