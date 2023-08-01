@@ -3,6 +3,7 @@
     <title>Alpine Js Crash Course</title>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         [x-cloak] { display: none !important; }
     </style>
@@ -45,6 +46,17 @@
             { id: 4, title: 'Post Four' }
             ],
             toggle() { this.open =! this.open },
+            addPost() {
+                // Calculate the maximum id value in the posts array
+                const maxId = Math.max(...this.posts.map(post => post.id));
+                
+                // Increment the maxId and use it as the id for the new post
+                const newId = maxId + 1;
+                this.posts.push({ id: newId, title: 'New Post', author: 'Your Name', body: 'New post content' });
+            },
+
+
+
             }" class="my-4 p-6 border rounded-md">
 
             <!-- Toggle Content (Show Hide Content) -->
@@ -108,9 +120,62 @@
                     </div>
                 </template>
 
-                <button @click="posts.push({title: 'New Post'})" class="bg-blue-800 text-white px-4 py-2 my-4 rounded-md">
+                <button @click="addPost" class="bg-blue-800 text-white px-4 py-2 my-4 rounded-md">
                     Add Post
                 </button>
+            </div>
+
+            <!-- x-ref -->
+            <div class="my-4 p-4 border rounded-md">
+                <p class="text-sm">x-ref in combination with $refs is a useful utility for easily accessing DOM elements directly.</p>
+                <button class="bg-slate-800 text-white px-4 py-2 my-4 rounded-md mr-4" @click="$refs.text.innerText='Hello 👋'; $refs.text.style.display = 'inline'">Add Text</button>
+                <button class="bg-slate-800 text-white px-4 py-2 my-4 rounded-md mr-4" @click="$refs.text.style.display = 'none'">Hide Text</button>
+            
+                <span x-ref="text"></span>
+            </div>
+
+            <!-- x-html -->
+            <div class="my-4 p-4 border rounded-md">
+                <p class="text-sm">Use x-html to bind a value from x-data to an element’s innerHTML.</p>
+                <div x-html="(await axios.get('./partial.html')).data"></div>
+
+            </div>
+
+            <!-- $el -->
+            <div class="my-4 p-4 border rounded-md">
+                <p class="text-sm">Use $el to access the root element of a component.</p>
+                <button @click="$el.style.backgroundColor = 'red'" class="bg-slate-800 text-white px-4 py-2 my-4 rounded-md">
+                    Change Background Color
+                </button>
+            </div>
+
+            <!-- $watch -->
+            <div class="my-4 p-4 border rounded-md">
+                <div x-init="$watch('posts', value => console.log(value))">
+                    <p class="text-sm">Use $watch to watch for changes to a value in x-data.</p>
+                    <button @click="addPost" class="bg-slate-800 text-white px-4 py-2 my-4 rounded-md">
+                        Add Post
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- $dispatch -->
+            <div class="my-4 p-4 border rounded-md">
+                <div @notify="alert('Hello World!')">
+                    <button class="bg-slate-800 text-white px-4 py-2 my-4 rounded-md" @click="$dispatch('notify')">
+                        Notify
+                    </button>
+                </div>
+            </div>
+
+            <!-- $data -->
+            <div class="my-4 p-4 border rounded-md">
+                <div>
+                    <div>
+                        <button @click="getLatestPost(posts)">PoP a Post</button>
+                    </div>
+                </div>
             </div>
 
             <!-- x-effect -->
@@ -124,5 +189,12 @@
         </div>
 
     </section>
+
+    <script>
+        function getLatestPost(posts) {
+            console.log(posts.slice(-1).pop());
+            return posts[posts.length - 1];
+        }        
+    </script>
 </body>
 </html>
